@@ -1,64 +1,57 @@
 apiVersion: v1
 kind: ServiceAccount
 metadata:
-  name: exchangerates-operator
-
+  name: cryptoprices-operator
+  namespace: default
 ---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: exchangerates-operator
+  name: cryptoprices-operator
   labels:
-    app: exchangerates-operator
+    app: cryptoprices-operator
 spec:
-  replicas: 1 # make sure to not have more than one replicas
+  replicas: 1
   strategy:
-    type: Recreate # make sure the old pod is being killed before the new pod is being created
+    type: Recreate
   selector:
     matchLabels:
-      app: exchangerates-operator
+      app: cryptoprices-operator
   template:
     metadata:
       labels:
-        app: exchangerates-operator
+        app: cryptoprices-operator
     spec:
-      serviceAccountName: exchangerates-operator
+      serviceAccountName: cryptoprices-operator
       containers:
-      - name: exchangerates-operator
-        image: exchangerates-operator:v1
+      - name: cryptoprices-operator
+        image: timrcase/cryptoprices-operator:v1.4
         imagePullPolicy: IfNotPresent
-
 ---
-
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRole
 metadata:
-  name: exchangerates-operator
+  name: cryptoprices-operator
 rules:
-- apiGroups: ["apiextensions.k8s.io"]
-  resources: ["customresourcedefinitions"]
-  verbs: ["create"]
 - apiGroups: [""]
   resources: ["configmaps"]
   verbs: ["create, patch"]
 - apiGroups: [""]
   resources: ["events"]
-  verbs: ["create"]
-- apiGroups: ["operators.brennerm.github.io"]
-  resources: ["exchangerates"]
+  verbs: ["watch", "create"]
+- apiGroups: ["operators.timrcase.github.io"]
+  resources: ["cryptoprices"]
   verbs: ["*"]
 ---
-
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRoleBinding
 metadata:
-  name: exchangerates-operator
+  name: cryptoprices-operator
 subjects:
 - kind: ServiceAccount
-  name: exchangerates-operator
+  name: cryptoprices-operator
   namespace: default
-  apiGroup: ""
 roleRef:
   kind: ClusterRole
-  name: exchangerates-operator
+  name: cryptoprices-operator
   apiGroup: rbac.authorization.k8s.io

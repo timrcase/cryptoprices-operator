@@ -4,4 +4,4 @@ metadata:
   name: btc-usd
 spec:
   coin: bitcoin
-  currency: usd
+  currency: eur
