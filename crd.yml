@@ -1,0 +1,31 @@
+# crd.yml
+apiVersion: apiextensions.k8s.io/v1
+kind: CustomResourceDefinition
+metadata:
+  name: cryptoprices.operators.timrcase.github.io
+spec:
+  group: operators.timrcase.github.io
+  versions:
+    - name: v1
+      served: true
+      storage: true
+      schema:
+        openAPIV3Schema:
+          type: object
+          properties:
+            spec:
+              type: object
+              properties:
+                coin:
+                  type: string
+                  enum: ["bitcoin","ethereum","litecoin","ripple","polkadot","dogecoin"]
+                currency:
+                  type: string
+                  enum: ["usd","eur","gbp"]
+  scope: Namespaced
+  names:
+    plural: cryptoprices
+    singular: cryptoprice
+    kind: CryptoPrice
+    shortNames:
+    - hodl

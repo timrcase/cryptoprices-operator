@@ -1,0 +1,7 @@
+apiVersion: operators.timrcase.github.io/v1
+kind: CryptoPrice
+metadata:
+  name: btc-usd
+spec:
+  coin: bitcoin
+  currency: usd
