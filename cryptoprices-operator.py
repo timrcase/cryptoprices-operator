@@ -29,7 +29,7 @@ def on_update(spec, **kwargs):
     currency = spec['currency']
     send_to_slack(coin, currency)
 
-@kopf.timer('operators.timrcase.github.io', 'v1', 'exchangerates', interval=3600.0)
+@kopf.timer('operators.timrcase.github.io', 'v1', 'cryptoprices', interval=3600.0)
 def update_price(spec, **kwargs):
     coin = spec['coin']
     currency = spec['currency']
