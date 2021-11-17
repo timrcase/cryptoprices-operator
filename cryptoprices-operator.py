@@ -17,20 +17,18 @@ def send_to_slack(coin, currency):
     slack_wehbook = os.environ.get('SLACK_WEBHOOK_URL')
     requests.post(slack_wehbook, headers=headers, data=json.dumps(payload))
 
-@kopf.on.create('operators.timrcase.github.io', 'v1', 'cryptoprices')
-def on_create(spec, **kwargs):
-    coin = spec['coin']
-    currency = spec['currency']
-    send_to_slack(coin, currency)
-
-@kopf.on.update('operators.timrcase.github.io', 'v1', 'cryptoprices')
-def on_update(spec, **kwargs):
-    coin = spec['coin']
-    currency = spec['currency']
-    send_to_slack(coin, currency)
-
+## Timer executes at creation and on the cadence defined by the interval
+## Create executes once at creation if that is preferred
+# @kopf.on.create('operators.timrcase.github.io', 'v1', 'cryptoprices')
 @kopf.timer('operators.timrcase.github.io', 'v1', 'cryptoprices', interval=3600.0)
 def update_price(spec, **kwargs):
+    coin = spec['coin']
+    currency = spec['currency']
+    send_to_slack(coin, currency)
+
+## Executes any time the custom resource is changed
+@kopf.on.update('operators.timrcase.github.io', 'v1', 'cryptoprices')
+def on_update(spec, **kwargs):
     coin = spec['coin']
     currency = spec['currency']
     send_to_slack(coin, currency)

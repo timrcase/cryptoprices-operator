@@ -1,8 +1,9 @@
-FROM python:3.8-alpine
+FROM python:3.8-slim
 
 LABEL org.opencontainers.image.source https://github.com/timrcase/cryptoprices-operator
 
-RUN apk --update add gcc build-base
-RUN pip install --no-cache-dir kopf requests
-ADD cryptoprices-operator.py /
-CMD kopf run /cryptoprices-operator.py
+WORKDIR /app
+COPY requirements.txt requirements.txt
+RUN pip3 install -r requirements.txt
+COPY cryptoprices-operator.py .
+CMD [ "kopf", "run", "/app/cryptoprices-operator.py" ]

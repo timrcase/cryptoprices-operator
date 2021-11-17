@@ -1,7 +1,23 @@
 apiVersion: operators.timrcase.github.io/v1
 kind: CryptoPrice
 metadata:
-  name: btc-price
+  name: btc-usd
 spec:
   coin: bitcoin
-  currency: eur
+  currency: usd
+---
+apiVersion: operators.timrcase.github.io/v1
+kind: CryptoPrice
+metadata:
+  name: ltc-usd
+spec:
+  coin: litecoin
+  currency: usd
+---
+apiVersion: operators.timrcase.github.io/v1
+kind: CryptoPrice
+metadata:
+  name: xrp-usd
+spec:
+  coin: ripple
+  currency: usd
