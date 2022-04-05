@@ -12,7 +12,7 @@ def get_price(coin, currency):
 
 def send_to_slack(coin, currency):
     price = get_price(coin, currency)
-    payload = {'text': f'{coin} is currently {price} {str(currency).upper()}'}
+    payload = {'text': f'{coin} is currently {price:,.2f} {str(currency).upper()}'}
     headers = {'Content-Type': 'application/json'}
     slack_wehbook = os.environ.get('SLACK_WEBHOOK_URL')
     requests.post(slack_wehbook, headers=headers, data=json.dumps(payload))
